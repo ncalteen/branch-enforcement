@@ -28,8 +28,7 @@ jobs:
         with:
           policy: |
             .*:dev
-            dev:qa
-            qa:main
+            dev:main
           head_ref: ${{ env.HEAD_REF }}
           base_ref: ${{ env.BASE_REF }}
 
