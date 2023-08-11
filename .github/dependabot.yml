@@ -1,0 +1,24 @@
+version: 2
+
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    assignees:
+      - ncalteen
+    schedule:
+      interval: weekly
+    labels:
+      - dependabot
+      - actions
+    open-pull-requests-limit: 10
+
+  - package-ecosystem: npm
+    directory: /
+    assignees:
+      - ncalteen
+    schedule:
+      interval: weekly
+    labels:
+      - dependabot
+      - npm
+    open-pull-requests-limit: 10
