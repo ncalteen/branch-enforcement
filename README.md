@@ -35,7 +35,8 @@ for each branch you want to restrict. At minimum, the rule must enforce the
 following:
 
 - Require a pull request before merging
-- Require status checks to pass before merging
+- Require status checks to pass before merging (the workflow that calls this
+  action must be included in the list of required checks)
 
 ![Example branch protection settings](img/branch-protection.png)
 
@@ -45,12 +46,12 @@ Create a new workflow file in your repository. You can do this by creating a new
 file in the `.github/workflows` directory. Your workflow must specify the
 following:
 
-| Key                | Description                                                                                 |
-| ------------------ | ------------------------------------------------------------------------------------------- |
-| `on: pull_request` | Trigger the workflow when a pull request is opened or updated.                              |
-|                    | This is required to populate the `github.head_ref` and `github.base_ref` context variables. |
-| `permissions`      | The workflow must have `write` permissions to statuses.                                     |
-|                    | This is required to set the status of the pull request.                                     |
+| Key                | Description                                            |
+| ------------------ | ------------------------------------------------------ |
+| `on: pull_request` | Trigger the workflow when a PR is opened / updated     |
+|                    | Sets `github.head_ref` / `github.base_ref` variables   |
+| `permissions`      | The workflow must have `write` permissions to statuses |
+|                    | This is required to set the status of the pull request |
 
 For example, you can create a file called `branch-enforcement.yml` with the
 following contents.
