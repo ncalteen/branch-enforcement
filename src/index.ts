@@ -17,7 +17,7 @@ export async function run(): Promise<string> {
     // Log the inputs.
     core.info(`Policy: ${inputPolicy.replace(/\n/g, ' | ')}`)
     core.info(`Head: ${headRef}`)
-    core.info(`Base: ${baseRef}`) //Comment for testing
+    core.info(`Base: ${baseRef}`)
 
     // Parse and validate the policy.
     const parsedPolicy: Policy = await parseBranchPolicy(core, inputPolicy)
