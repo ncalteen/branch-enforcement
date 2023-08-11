@@ -1,0 +1,38 @@
+#############################
+## JavaScript Linter rules ##
+#############################
+
+env:
+  node: true
+  es6: true
+  jest: true
+  commonjs: true
+
+globals:
+  Atomics: readonly
+  SharedArrayBuffer: readonly
+
+ignorePatterns:
+  - '!.*'
+  - '**/node_modules/.*'
+  - '**/dist/.*'
+  - '**/lib/.*'
+
+parser: '@typescript-eslint/parser'
+
+parserOptions:
+  ecmaVersion: 2020
+  sourceType: module
+  project: tsconfig.json
+
+plugins:
+  - jest
+  - '@typescript-eslint'
+
+rules:
+  prettier/prettier: error
+
+extends:
+  - eslint:recommended
+  - plugin:github/recommended
+  - plugin:jest/recommended

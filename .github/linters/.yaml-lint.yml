@@ -1,0 +1,19 @@
+###########################
+## YAML Linter rules     ##
+###########################
+
+# Note:
+# To disable linting a single line:
+#   # yamllint disable-line
+#   any violations you want
+
+rules:
+  document-end: disable
+  document-start:
+    level: warning
+    present: false
+  line-length:
+    level: warning
+    max: 80
+    allow-non-breakable-words: true
+    allow-non-breakable-inline-mappings: true
