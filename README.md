@@ -16,11 +16,10 @@ demo, we will restrict merging to follow the below branch order:
 
 To test this out, you can create a new branch and try to merge it into any
 branch besides `dev`. After that, try merging `dev` into `qa` or `main`, and you
-should see that the PR is blocked.
-
-This action lets you specify regular expressions to compare the `base` and
-`head` refs of a pull request. If an incoming pull request does not match at
-least one of the specified regular expressions, the action will fail.
+should see that the PR is blocked. This action lets you specify regular
+expressions to compare the `base` and `head` refs of a pull request. If an
+incoming pull request does not match at least one of the specified regular
+expressions, the action will fail.
 
 ## Usage
 
