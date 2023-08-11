@@ -35,7 +35,8 @@ for each branch you want to restrict. At minimum, the rule must enforce the
 following:
 
 - Require a pull request before merging
-- Require status checks to pass before merging
+- Require status checks to pass before merging (the workflow that calls this
+  action must be included in the list of required checks)
 
 ![Example branch protection settings](img/branch-protection.png)
 
