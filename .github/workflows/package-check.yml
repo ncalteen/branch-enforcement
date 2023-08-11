@@ -1,0 +1,55 @@
+name: Package Check
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  package-check:
+    name: Compare dist/ Directory
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      statuses: write
+
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: .node-version
+          cache: npm
+
+      - name: Install Dependencies
+        id: install
+        run: npm ci
+
+      - name: Build dist/ Directory
+        id: build
+        run: npm run bundle
+
+      - name: Compare Expected and Actual Directories
+        id: diff
+        run: |
+          if [ "$(git diff --ignore-space-at-eol dist/ | wc -l)" -gt "0" ]; then
+            echo "Detected uncommitted changes after build. See status below:"
+            git diff
+            exit 1
+          fi
+
+      # If index.js was different than expected, upload the expected version as
+      # a workflow artifact.
+      - uses: actions/upload-artifact@v3
+        if: ${{ failure() && steps.diff.conclusion == 'failure' }}
+        with:
+          name: dist
+          path: dist/

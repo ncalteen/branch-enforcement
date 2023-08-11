@@ -31,6 +31,7 @@ plugins:
 
 rules:
   prettier/prettier: error
+  i18n-text/no-en: off
 
 extends:
   - eslint:recommended

@@ -1,0 +1,28 @@
+name: Branch Enforcement
+description: Enforce the order branches can be merged.
+author: Nick Alteen
+
+branding:
+  icon: git-pull-request
+  color: red
+
+inputs:
+  policy:
+    description: |
+      A comma-separated list of branches in the order they can be merged. Each line should contain the name of the branch and the name of the branch it can be merged into separated by a colon. For example, `dev:main` would indicate that the `dev` branch can be merged into the `main` branch. Use `*` to indicate any branch. For example, `*:dev` would indicate that any branch can be merged into the `dev` branch.
+    required: true
+    default: |
+      .:dev
+      dev:qa
+      qa:main
+  head_ref:
+    description: The name of the branch being merged.
+    required: true
+  base_ref:
+    description: The name of the branch being merged into.
+    required: true
+    default: main
+
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
