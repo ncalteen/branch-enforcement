@@ -20,8 +20,7 @@ jobs:
     steps:
       # Policy:
       #   - Any branch can be merged into dev (e.g. feature branches)
-      #   - dev can be merged into qa
-      #   - qa can be merged into main
+      #   - dev can be merged into main
       - name: Enforce Merge Policy
         id: enforce-policy
         uses: ncalteen/branch-enforcement@main
