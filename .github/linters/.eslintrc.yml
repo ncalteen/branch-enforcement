@@ -16,7 +16,6 @@ ignorePatterns:
   - '!.*'
   - '**/node_modules/.*'
   - '**/dist/.*'
-  - '**/lib/.*'
 
 parser: '@typescript-eslint/parser'
 
