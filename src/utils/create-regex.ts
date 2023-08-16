@@ -8,7 +8,6 @@ export async function createRegex(
   ref: string
 ): Promise<RegExp> {
   core.info(`Create regex from: ${ref}`)
-  core.info(`${ref[0]} | ${/[\w\d]/.test(ref[0])}`)
 
   // Empty string.
   if (ref.trim() === '') throw new SyntaxError(`Empty pattern: ${ref}`)
