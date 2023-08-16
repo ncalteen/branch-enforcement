@@ -22,17 +22,46 @@ parser: '@typescript-eslint/parser'
 parserOptions:
   ecmaVersion: 2020
   sourceType: module
-  project: tsconfig.json
+  project:
+    - './tsconfig.json'
+    - './__tests__/tsconfig.json'
 
 plugins:
   - jest
   - '@typescript-eslint'
 
 rules:
-  prettier/prettier: error
   i18n-text/no-en: off
+  import/no-namespace: off
+  jest/no-conditional-expect: off
+  no-useless-escape: off
+  no-case-declarations: off
+  prettier/prettier: error
 
 extends:
   - eslint:recommended
   - plugin:github/recommended
   - plugin:jest/recommended
+
+overrides:
+  - files:
+      - '*.json'
+    extends:
+      - plugin:jsonc/recommended-with-json
+    parser: jsonc-eslint-parser
+    parserOptions:
+      jsonSyntax: JSON
+  - files:
+      - '*.jsonc'
+    extends:
+      - plugin:jsonc/recommended-with-jsonc
+    parser: jsonc-eslint-parser
+    parserOptions:
+      jsonSyntax: JSONC
+  - files:
+      - '*.json5'
+    extends:
+      - plugin:jsonc/recommended-with-json5
+    parser: jsonc-eslint-parser
+    parserOptions:
+      jsonSyntax: JSON5
