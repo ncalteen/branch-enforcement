@@ -10,5 +10,5 @@
     "esModuleInterop": true,
     "skipLibCheck": true
   },
-  "exclude": ["__test__", "dist", "node_modules"]
+  "exclude": ["dist", "node_modules", "__tests__"]
 }

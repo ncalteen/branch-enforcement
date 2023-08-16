@@ -20,8 +20,8 @@
   "scripts": {
     "bundle": "npm run format:write && npm run package",
     "ci-test": "jest",
-    "format:write": "prettier --write src __test__",
-    "format:check": "prettier --check src __test__",
+    "format:write": "prettier --write src __tests__",
+    "format:check": "prettier --check src __tests__",
     "lint": "eslint -c ./.github/linters/.eslintrc.yml src/**/*.ts",
     "package": "ncc build src/index.ts",
     "test": "(jest && make-coverage-badge --output-path ./badges/coverage.svg) || make-coverage-badge --output-path ./badges/coverage.svg",
