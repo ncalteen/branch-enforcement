@@ -1,4 +1,3 @@
-import exp from 'constants'
 import { createRegex } from '../src/utils/create-regex'
 import * as core from '@actions/core'
 
