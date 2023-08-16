@@ -1,4 +1,4 @@
-import { createRegex } from '../src/utils/create-regex'
+import { createRegex } from '../utils/create-regex'
 import * as core from '@actions/core'
 
 describe('createRegex', () => {
