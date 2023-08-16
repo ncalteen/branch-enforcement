@@ -7,13 +7,11 @@ const errorMock = jest.spyOn(core, 'error')
 const infoMock = jest.spyOn(core, 'info')
 const setFailedMock = jest.spyOn(core, 'setFailed')
 
-const validPolicy = dedent`.*:dev
+const validPolicy = dedent`*:dev
 dev:qa
 qa:main`
 
-const invalidPolicy = dedent`*:dev
-dev:qa
-qa:main`
+const invalidPolicy = dedent`**/*/my-branch:dev`
 
 beforeEach(() => {
   jest.clearAllMocks()
@@ -61,7 +59,7 @@ describe('run', () => {
     }
   })
 
-  it('should fail if policy is not valid regex', async () => {
+  it('should fail if policy is not valid', async () => {
     getInputMock.mockReturnValueOnce(invalidPolicy)
     getInputMock.mockReturnValueOnce('dev')
     getInputMock.mockReturnValueOnce('qa')
@@ -69,20 +67,16 @@ describe('run', () => {
     expect(await run()).toBe('failure')
 
     try {
-      expect(errorMock).toHaveBeenCalledWith(
-        'Invalid regular expression: /*/: Nothing to repeat'
-      )
+      expect(errorMock).toHaveBeenCalledWith('Invalid pattern: **/*/my-branch')
       expect(errorMock).toHaveBeenCalledWith(
         `Policy line: ${invalidPolicy.split('\n')[0]}`
       )
       expect(setFailedMock).toHaveBeenCalledWith(
-        'Policy contains invalid regular expression(s)'
+        'Policy contains invalid pattern(s)'
       )
     } catch (error: any) {
       expect(error).toBeInstanceOf(Error)
-      expect(error.message).toBe(
-        'Policy contains invalid regular expression(s)'
-      )
+      expect(error.message).toBe('Policy contains invalid pattern(s)')
     }
   })
 
