@@ -25,6 +25,17 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup Node.js
+        id: setup-node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: .node-version
+          cache: npm
+
+      - name: Install Dependencies
+        id: install
+        run: npm ci
+
       - name: Super Linter
         id: super-linter
         uses: super-linter/super-linter/slim@v5
