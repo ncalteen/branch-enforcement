@@ -1,4 +1,4 @@
-import { run } from '../index'
+import { run } from '../src/index'
 import * as core from '@actions/core'
 import dedent from 'dedent-js'
 
