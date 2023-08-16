@@ -28,10 +28,12 @@ plugins:
   - '@typescript-eslint'
 
 rules:
-  prettier/prettier: error
   i18n-text/no-en: off
+  import/no-namespace: off
+  jest/no-conditional-expect: off
   no-useless-escape: off
   no-case-declarations: off
+  prettier/prettier: error
 
 extends:
   - eslint:recommended
