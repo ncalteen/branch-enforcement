@@ -26,7 +26,7 @@ jobs:
         uses: ncalteen/branch-enforcement@main
         with:
           policy: |
-            .*:dev
+            *:dev
             dev:main
           head_ref: ${{ env.HEAD_REF }}
           base_ref: ${{ env.BASE_REF }}
