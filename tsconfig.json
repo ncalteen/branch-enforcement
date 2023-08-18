@@ -1,14 +1,15 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
-    "target": "es6",
+    "declaration": true,
+    "esModuleInterop": true,
     "module": "commonjs",
     "lib": ["es6"],
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "declaration": true,
+    "outDir": "dist",
+    "rootDirs": ["src", "__tests__"],
+    "skipLibCheck": true,
     "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true
+    "target": "es6"
   },
-  "exclude": ["dist", "node_modules", "__tests__"]
+  "exclude": ["dist", "node_modules"]
 }

@@ -44,7 +44,11 @@
       "global": {
         "lines": 100
       }
-    }
+    },
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/dist/"
+    ]
   },
   "dependencies": {
     "@actions/core": "^1.10.0",
