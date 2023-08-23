@@ -112,7 +112,7 @@ jobs:
       #   - qa can be merged into main
       - name: Enforce Merge Policy
         id: enforce-policy
-        uses: ncalteen/branch-enforcer@v1.0.1
+        uses: ncalteen/branch-enforcement@v1.0.1
         with:
           policy: |
             *:dev
