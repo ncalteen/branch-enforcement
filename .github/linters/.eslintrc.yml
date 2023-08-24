@@ -16,6 +16,7 @@ ignorePatterns:
   - '!.*'
   - '**/node_modules/.*'
   - '**/dist/.*'
+  - '**/coverage/**'
 
 parser: '@typescript-eslint/parser'
 
@@ -37,6 +38,7 @@ rules:
   no-useless-escape: off
   no-case-declarations: off
   prettier/prettier: error
+  filenames/match-regex: off
 
 extends:
   - eslint:recommended
