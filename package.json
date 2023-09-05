@@ -60,7 +60,7 @@
     "@types/lodash": "^4.14.197",
     "@types/node": "^20.5.7",
     "@typescript-eslint/eslint-plugin": "^6.6.0",
-    "@typescript-eslint/parser": "^6.5.0",
+    "@typescript-eslint/parser": "^6.6.0",
     "@vercel/ncc": "^0.36.1",
     "dedent-js": "^1.0.1",
     "eslint": "^8.48.0",
