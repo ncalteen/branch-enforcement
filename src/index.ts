@@ -3,7 +3,7 @@ import { parseBranchPolicy } from './utils/parse-branch-policy'
 import { Policy } from './interfaces'
 
 /**
- * Fails if the branch merge order is not being followed.
+ * Fails if the branch merge order is not being followed
  */
 export async function run(): Promise<string> {
   let isValid: boolean = false
