@@ -19962,7 +19962,7 @@ exports.run = void 0;
 const core = __importStar(__nccwpck_require__(186));
 const parse_branch_policy_1 = __nccwpck_require__(194);
 /**
- * Fails if the branch merge order is not being followed.
+ * Fails if the branch merge order is not being followed
  */
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
