@@ -2,16 +2,20 @@ name: Continuous Integration
 
 on:
   push:
+    branches:
+      - main
   pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  statuses: write
 
 jobs:
   continuous-integration:
     name: Continuous Integration
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: read
-      statuses: write
 
     steps:
       - name: Checkout

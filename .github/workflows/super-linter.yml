@@ -5,16 +5,18 @@ on:
     branches:
       - main
   push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  packages: read
+  statuses: write
 
 jobs:
   lint:
     name: Lint Codebase
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: read
-      packages: read
-      statuses: write
 
     steps:
       - name: Checkout
@@ -36,7 +38,7 @@ jobs:
 
       - name: Super Linter
         id: super-linter
-        uses: super-linter/super-linter/slim@v5
+        uses: super-linter/super-linter/slim@v6
         env:
           VALIDATE_ALL_CODEBASE: false
           VALIDATE_TYPESCRIPT_STANDARD: false

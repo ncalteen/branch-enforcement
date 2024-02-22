@@ -2,17 +2,21 @@ name: Package Check
 
 on:
   push:
+    branches:
+      - main
   pull_request:
+    branches:
+      - main
   workflow_dispatch:
+
+permissions:
+  contents: read
+  statuses: write
 
 jobs:
   package-check:
     name: Compare dist/ Directory
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: read
-      statuses: write
 
     steps:
       - name: Checkout
