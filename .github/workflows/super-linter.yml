@@ -5,16 +5,18 @@ on:
     branches:
       - main
   push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  packages: read
+  statuses: write
 
 jobs:
   lint:
     name: Lint Codebase
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: read
-      packages: read
-      statuses: write
 
     steps:
       - name: Checkout
