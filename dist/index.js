@@ -43451,8 +43451,8 @@ const lodash_1 = __importDefault(__nccwpck_require__(250));
  * Create a regex from a string
  */
 function createRegex(core, ref) {
-    var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
+        var _a, _b;
         core.info(`Create regex from: ${ref}`);
         // Empty string.
         if (ref.trim() === '')
