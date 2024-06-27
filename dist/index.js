@@ -43597,7 +43597,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.run = void 0;
+exports.run = run;
 const core = __importStar(__nccwpck_require__(2186));
 const parse_branch_policy_1 = __nccwpck_require__(3194);
 /**
@@ -43636,7 +43636,6 @@ function run() {
         }
     });
 }
-exports.run = run;
 run();
 
 
@@ -43660,7 +43659,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createRegex = void 0;
+exports.createRegex = createRegex;
 const lodash_1 = __importDefault(__nccwpck_require__(250));
 /**
  * Create a regex from a string
@@ -43717,7 +43716,6 @@ function createRegex(core, ref) {
         }
     });
 }
-exports.createRegex = createRegex;
 
 
 /***/ }),
@@ -43737,7 +43735,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.parseBranchPolicy = void 0;
+exports.parseBranchPolicy = parseBranchPolicy;
 const create_regex_1 = __nccwpck_require__(5622);
 /**
  * Parses the branch policy input or throws an error if the policy is invalid.
@@ -43770,7 +43768,6 @@ function parseBranchPolicy(core, branchPolicy) {
         return parsedPolicy;
     });
 }
-exports.parseBranchPolicy = parseBranchPolicy;
 
 
 /***/ }),
