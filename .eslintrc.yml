@@ -1,3 +1,7 @@
+#############################
+## JavaScript Linter rules ##
+#############################
+
 env:
   node: true
   es6: true
@@ -5,22 +9,20 @@ env:
 
 globals:
   Atomics: readonly
-  NodeRequire: readonly
   SharedArrayBuffer: readonly
 
 ignorePatterns:
-  - .github
-  - .vscode
   - coverage
   - dist
+  - linter
   - node_modules
-  - reports
 
 parser: '@typescript-eslint/parser'
 
 parserOptions:
   ecmaVersion: 2023
-  project: tsconfig.eslint.json
+  project:
+    - tsconfig.eslint.json
   sourceType: module
   tsconfigRootDir: .
 
@@ -33,23 +35,24 @@ settings:
 plugins:
   - import
   - jest
+  - prettier
   - '@typescript-eslint'
 
 extends:
   - eslint:recommended
   - plugin:@typescript-eslint/eslint-recommended
   - plugin:@typescript-eslint/recommended
+  - plugin:github/recommended
   - plugin:jest/recommended
+  - plugin:prettier/recommended
 
 rules:
-  {
-    'camelcase': 'off',
-    'eslint-comments/no-use': 'off',
-    'eslint-comments/no-unused-disable': 'off',
-    'i18n-text/no-en': 'off',
-    'import/no-namespace': 'off',
-    'no-console': 'off',
-    'no-unused-vars': 'off',
-    'no-useless-escape': 'off',
-    'semi': 'off'
-  }
+  camelcase: off
+  eslint-comments/no-use: off
+  eslint-comments/no-unused-disable: off
+  i18n-text/no-en: off
+  import/no-namespace: off
+  no-console: off
+  no-shadow: off
+  no-unused-vars: off
+  prettier/prettier: error

@@ -1,10 +1,10 @@
 name: CodeQL
 
 on:
-  pull_request:
+  push:
     branches:
       - main
-  push:
+  pull_request:
     branches:
       - main
   schedule:
@@ -25,7 +25,7 @@ jobs:
       fail-fast: false
       matrix:
         language:
-          - typescript
+          - javascript
 
     steps:
       - name: Checkout
@@ -37,7 +37,6 @@ jobs:
         uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
-          source-root: src
 
       - name: Autobuild
         id: autobuild
