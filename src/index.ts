@@ -23,7 +23,7 @@ export async function run(): Promise<string> {
     const parsedPolicy: Policy = await parseBranchPolicy(core, inputPolicy)
 
     // Check if the head/base pair is valid.
-    isValid = parsedPolicy.some(policyEntry => {
+    isValid = parsedPolicy.some((policyEntry) => {
       return policyEntry.head.test(headRef) && policyEntry.base.test(baseRef)
     })
 

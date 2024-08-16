@@ -2,7 +2,7 @@
 
 ![CodeQL](https://github.com/ncalteen/branch-enforcement/actions/workflows/codeql.yml/badge.svg)
 ![Continuous Integration](https://github.com/ncalteen/branch-enforcement/actions/workflows/continuous-integration.yml/badge.svg)
-![Package Check](https://github.com/ncalteen/branch-enforcement/actions/workflows/package-check.yml/badge.svg)
+![Package Check](https://github.com/ncalteen/branch-enforcement/actions/workflows/check-dist.yml/badge.svg)
 ![Linter](https://github.com/ncalteen/branch-enforcement/actions/workflows/linter.yml/badge.svg)
 ![Code Coverage](./badges/coverage.svg)
 
