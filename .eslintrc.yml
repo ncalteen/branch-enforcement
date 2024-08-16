@@ -53,5 +53,6 @@ rules:
   import/no-namespace: off
   no-console: off
   no-shadow: off
+  no-useless-escape: off
   no-unused-vars: off
   prettier/prettier: error
