@@ -7,9 +7,6 @@ updates:
       - ncalteen
     schedule:
       interval: weekly
-    labels:
-      - dependabot
-      - actions
     open-pull-requests-limit: 10
 
   - package-ecosystem: npm
@@ -18,9 +15,6 @@ updates:
       - ncalteen
     schedule:
       interval: weekly
-    labels:
-      - dependabot
-      - npm
     open-pull-requests-limit: 10
     groups:
       development:

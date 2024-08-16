@@ -1,6 +1,0 @@
-{
-  "threshold": 0,
-  "reporters": ["consoleFull"],
-  "ignore": ["**/__snapshots__/**", "**/*.yml"],
-  "absolute": true
-}

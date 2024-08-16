@@ -1,12 +1,10 @@
+import * as core from '@actions/core'
 import _ from 'lodash'
 
 /**
  * Create a regex from a string
  */
-export async function createRegex(
-  core: typeof import('@actions/core'),
-  ref: string
-): Promise<RegExp> {
+export async function createRegex(ref: string): Promise<RegExp> {
   core.info(`Create regex from: ${ref}`)
 
   // Empty string.
@@ -33,7 +31,7 @@ export async function createRegex(
       // Match letters, digits, dashes, underscores, and slashes.
       core.info(`Match letters, digits, dashes, underscores, slashes: ${ref}`)
       return /^[\w\d\-\_\/]+$/
-    default:
+    default: {
       // Get the part of the ref before the first asterisk.
       const lead: string = /^[\w\d\-\_\/]+/.exec(_.escapeRegExp(ref))?.[0] ?? ''
       core.info(`Lead: ${lead}`)
@@ -57,5 +55,6 @@ export async function createRegex(
           core.info(`Fall back to just the lead: ${ref}`)
           return new RegExp(`^${lead.replace('/', '')}$`)
       }
+    }
   }
 }

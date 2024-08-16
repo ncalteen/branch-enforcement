@@ -1,0 +1,55 @@
+env:
+  node: true
+  es6: true
+  jest: true
+
+globals:
+  Atomics: readonly
+  NodeRequire: readonly
+  SharedArrayBuffer: readonly
+
+ignorePatterns:
+  - .github
+  - .vscode
+  - coverage
+  - dist
+  - node_modules
+  - reports
+
+parser: '@typescript-eslint/parser'
+
+parserOptions:
+  ecmaVersion: 2023
+  project: tsconfig.eslint.json
+  sourceType: module
+  tsconfigRootDir: .
+
+settings:
+  import/resolver:
+    typescript:
+      alwaysTryTypes: true
+      project: tsconfig.eslint.json
+
+plugins:
+  - import
+  - jest
+  - '@typescript-eslint'
+
+extends:
+  - eslint:recommended
+  - plugin:@typescript-eslint/eslint-recommended
+  - plugin:@typescript-eslint/recommended
+  - plugin:jest/recommended
+
+rules:
+  {
+    'camelcase': 'off',
+    'eslint-comments/no-use': 'off',
+    'eslint-comments/no-unused-disable': 'off',
+    'i18n-text/no-en': 'off',
+    'import/no-namespace': 'off',
+    'no-console': 'off',
+    'no-unused-vars': 'off',
+    'no-useless-escape': 'off',
+    'semi': 'off'
+  }

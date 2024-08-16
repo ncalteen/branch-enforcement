@@ -1,12 +1,12 @@
 import * as core from '@actions/core'
-import { parseBranchPolicy } from './utils/parse-branch-policy'
-import { Policy } from './interfaces'
+import { Policy } from './interfaces.js'
+import { parseBranchPolicy } from './utils/parse-branch-policy.js'
 
 /**
  * Fails if the branch merge order is not being followed
  */
 export async function run(): Promise<string> {
-  let isValid: boolean = false
+  let isValid = false
 
   try {
     // Get the inputs.
@@ -23,7 +23,7 @@ export async function run(): Promise<string> {
     const parsedPolicy: Policy = await parseBranchPolicy(core, inputPolicy)
 
     // Check if the head/base pair is valid.
-    isValid = parsedPolicy.some((policyEntry) => {
+    isValid = parsedPolicy.some(policyEntry => {
       return policyEntry.head.test(headRef) && policyEntry.base.test(baseRef)
     })
 
@@ -34,6 +34,7 @@ export async function run(): Promise<string> {
       core.setFailed(`Branch merge order is invalid: ${headRef} -> ${baseRef}`)
       return 'failure'
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     core.setFailed(JSON.stringify(error))
     return 'failure'

@@ -1,11 +1,10 @@
-import { run } from '../src/index'
-import * as core from '@actions/core'
+/* eslint-disable jest/no-conditional-expect */
+import { jest } from '@jest/globals'
 import dedent from 'dedent-js'
+import * as core from '../__fixtures__/core.js'
 
-const getInputMock = jest.spyOn(core, 'getInput')
-const errorMock = jest.spyOn(core, 'error')
-const infoMock = jest.spyOn(core, 'info')
-const setFailedMock = jest.spyOn(core, 'setFailed')
+jest.unstable_mockModule('@actions/core', () => core)
+const { run } = await import('../src/index.js')
 
 const validPolicy = dedent`*:dev
 dev:qa
@@ -13,96 +12,95 @@ qa:main`
 
 const invalidPolicy = dedent`**/*/my-branch:dev`
 
-beforeEach(() => {
-  jest.clearAllMocks()
-})
-
 describe('run', () => {
-  it('should fail if policy is not provided', async () => {
-    expect(await run()).toBe('failure')
+  beforeEach(() => {
+    jest.resetAllMocks()
+  })
 
+  it('Should fail if a policy is not provided', async () => {
     try {
-      expect(getInputMock).toHaveBeenCalledWith('policy', { required: true })
+      expect(await run()).toBe('failure')
+      expect(core.getInput).toHaveBeenCalledWith('policy', { required: true })
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       expect(error).toBeInstanceOf(Error)
       expect(error.message).toBe('Input required and not supplied: policy')
     }
   })
 
-  it('should fail if head_ref is not provided', async () => {
-    getInputMock.mockReturnValueOnce(validPolicy)
+  it('Should fail if head_ref is not provided', async () => {
+    core.getInput.mockReturnValueOnce(validPolicy)
 
     expect(await run()).toBe('failure')
 
     try {
-      expect(getInputMock).toHaveBeenCalledWith('policy', { required: true })
-      expect(getInputMock).toHaveBeenCalledWith('head_ref', { required: true })
+      expect(core.getInput).toHaveBeenCalledWith('policy', { required: true })
+      expect(core.getInput).toHaveBeenCalledWith('head_ref', { required: true })
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       expect(error).toBeInstanceOf(Error)
       expect(error.message).toBe('Input required and not supplied: head_ref')
     }
   })
 
-  it('should fail if base_ref is not provided', async () => {
-    getInputMock.mockReturnValueOnce(validPolicy)
-    getInputMock.mockReturnValueOnce('dev')
+  it('Should fail if base_ref is not provided', async () => {
+    core.getInput.mockReturnValueOnce(validPolicy).mockReturnValueOnce('dev')
 
     expect(await run()).toBe('failure')
 
     try {
-      expect(getInputMock).toHaveBeenCalledWith('policy', { required: true })
-      expect(getInputMock).toHaveBeenCalledWith('head_ref', { required: true })
-      expect(getInputMock).toHaveBeenCalledWith('base_ref', { required: true })
+      expect(core.getInput).toHaveBeenCalledWith('policy', { required: true })
+      expect(core.getInput).toHaveBeenCalledWith('head_ref', { required: true })
+      expect(core.getInput).toHaveBeenCalledWith('base_ref', { required: true })
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       expect(error).toBeInstanceOf(Error)
       expect(error.message).toBe('Input required and not supplied: base_ref')
     }
   })
 
-  it('should fail if policy is not valid', async () => {
-    getInputMock.mockReturnValueOnce(invalidPolicy)
-    getInputMock.mockReturnValueOnce('dev')
-    getInputMock.mockReturnValueOnce('qa')
+  it('Should fail if policy is not valid', async () => {
+    core.getInput
+      .mockReturnValueOnce(invalidPolicy)
+      .mockReturnValueOnce('dev')
+      .mockReturnValueOnce('qa')
 
     expect(await run()).toBe('failure')
 
-    try {
-      expect(errorMock).toHaveBeenCalledWith('Invalid pattern: **/*/my-branch')
-      expect(errorMock).toHaveBeenCalledWith(
-        `Policy line: ${invalidPolicy.split('\n')[0]}`
-      )
-      expect(setFailedMock).toHaveBeenCalledWith(
-        'Policy contains invalid pattern(s)'
-      )
-    } catch (error: any) {
-      expect(error).toBeInstanceOf(Error)
-      expect(error.message).toBe('Policy contains invalid pattern(s)')
-    }
+    expect(core.error).toHaveBeenCalledWith('Invalid pattern: **/*/my-branch')
+    expect(core.error).toHaveBeenCalledWith(
+      `Policy line: ${invalidPolicy.split('\n')[0]}`
+    )
+    expect(core.setFailed).toHaveBeenCalledWith(
+      'Policy contains invalid pattern(s)'
+    )
   })
 
-  it('should fail if head and base do not follow valid policy', async () => {
-    getInputMock.mockReturnValueOnce(validPolicy)
-    getInputMock.mockReturnValueOnce('dev')
-    getInputMock.mockReturnValueOnce('main')
+  it('Should fail if head and base do not follow valid policy', async () => {
+    core.getInput
+      .mockReturnValueOnce(validPolicy)
+      .mockReturnValueOnce('dev')
+      .mockReturnValueOnce('main')
 
     expect(await run()).toBe('failure')
-    expect(setFailedMock).toHaveBeenCalledWith(
+    expect(core.setFailed).toHaveBeenCalledWith(
       'Branch merge order is invalid: dev -> main'
     )
   })
 
-  it('should pass if head and base follow valid policy', async () => {
-    getInputMock.mockReturnValueOnce(validPolicy)
-    getInputMock.mockReturnValueOnce('dev')
-    getInputMock.mockReturnValueOnce('qa')
+  it('Should pass if head and base follow valid policy', async () => {
+    core.getInput
+      .mockReturnValueOnce(validPolicy)
+      .mockReturnValueOnce('dev')
+      .mockReturnValueOnce('qa')
 
     expect(await run()).toBe('success')
-    expect(infoMock).toHaveBeenCalledWith(
+    expect(core.info).toHaveBeenCalledWith(
       `Policy: ${validPolicy.replace(/\n/g, ' | ')}`
     )
-    expect(infoMock).toHaveBeenCalledWith('Head: dev')
-    expect(infoMock).toHaveBeenCalledWith('Base: qa')
-    expect(infoMock).toHaveBeenCalledWith(
+    expect(core.info).toHaveBeenCalledWith('Head: dev')
+    expect(core.info).toHaveBeenCalledWith('Base: qa')
+    expect(core.info).toHaveBeenCalledWith(
       'Branch merge order is valid: dev -> qa'
     )
   })

@@ -1,5 +1,5 @@
-import { Policy } from '../interfaces'
-import { createRegex } from './create-regex'
+import { Policy } from '../interfaces.js'
+import { createRegex } from './create-regex.js'
 
 /**
  * Parses the branch policy input or throws an error if the policy is invalid.
@@ -19,11 +19,12 @@ export async function parseBranchPolicy(
 
     try {
       // Generate regular expressions from the head and base patterns.
-      const headRegExp: RegExp = await createRegex(core, head)
-      const baseRegExp: RegExp = await createRegex(core, base)
+      const headRegExp: RegExp = await createRegex(head)
+      const baseRegExp: RegExp = await createRegex(base)
 
       core.info(`Parsed policy line: ${headRegExp} : ${baseRegExp}`)
       parsedPolicy.push({ head: headRegExp, base: baseRegExp })
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error instanceof SyntaxError) {
         core.error(error.message)
