@@ -1,13 +1,13 @@
-import { Policy } from '../interfaces.js'
+import * as core from '@actions/core'
+import { PolicyEntry } from '../interfaces.js'
 import { createRegex } from './create-regex.js'
 
 /**
  * Parses the branch policy input or throws an error if the policy is invalid.
  */
 export async function parseBranchPolicy(
-  core: typeof import('@actions/core'),
   branchPolicy: string
-): Promise<Policy> {
+): Promise<Array<PolicyEntry>> {
   const parsedPolicy = []
 
   // Split the policy into an array of head/base pairs.

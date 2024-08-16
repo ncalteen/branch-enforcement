@@ -43797,10 +43797,11 @@ async function createRegex(ref) {
 
 ;// CONCATENATED MODULE: ./src/utils/parse-branch-policy.ts
 
+
 /**
  * Parses the branch policy input or throws an error if the policy is invalid.
  */
-async function parseBranchPolicy(core, branchPolicy) {
+async function parseBranchPolicy(branchPolicy) {
     const parsedPolicy = [];
     // Split the policy into an array of head/base pairs.
     const policyLines = branchPolicy.split('\n');
@@ -43846,9 +43847,9 @@ async function run() {
         core.info(`Head: ${headRef}`);
         core.info(`Base: ${baseRef}`);
         // Parse and validate the policy.
-        const parsedPolicy = await parseBranchPolicy(core, inputPolicy);
+        const parsedPolicy = await parseBranchPolicy(inputPolicy);
         // Check if the head/base pair is valid.
-        isValid = parsedPolicy.some(policyEntry => {
+        isValid = parsedPolicy.some((policyEntry) => {
             return policyEntry.head.test(headRef) && policyEntry.base.test(baseRef);
         });
         if (isValid) {

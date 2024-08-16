@@ -1,5 +1,5 @@
 import * as core from '@actions/core'
-import { Policy } from './interfaces.js'
+import { PolicyEntry } from './interfaces.js'
 import { parseBranchPolicy } from './utils/parse-branch-policy.js'
 
 /**
@@ -20,7 +20,8 @@ export async function run(): Promise<string> {
     core.info(`Base: ${baseRef}`)
 
     // Parse and validate the policy.
-    const parsedPolicy: Policy = await parseBranchPolicy(core, inputPolicy)
+    const parsedPolicy: Array<PolicyEntry> =
+      await parseBranchPolicy(inputPolicy)
 
     // Check if the head/base pair is valid.
     isValid = parsedPolicy.some((policyEntry) => {
