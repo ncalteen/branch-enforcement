@@ -1,6 +1,4 @@
-###########################
-## YAML Linter rules     ##
-###########################
+# See: https://yamllint.readthedocs.io/en/stable/
 
 rules:
   document-end: disable
@@ -9,6 +7,6 @@ rules:
     present: false
   line-length:
     level: warning
-    max: 120
+    max: 80
     allow-non-breakable-words: true
     allow-non-breakable-inline-mappings: true

@@ -8,8 +8,13 @@ branding:
 
 inputs:
   policy:
-    description: |
-      A comma-separated list of branches in the order they can be merged. Each line should contain the name of the branch and the name of the branch it can be merged into separated by a colon. For example, `dev:main` would indicate that the `dev` branch can be merged into the `main` branch. Use `*` to indicate any branch. For example, `*:dev` would indicate that any branch can be merged into the `dev` branch.
+    description:
+      A comma-separated list of branches in the order they can be merged. Each
+      line should contain the name of the branch and the name of the branch it
+      can be merged into separated by a colon. For example, `dev:main` would
+      indicate that the `dev` branch can be merged into the `main` branch. Use
+      `*` to indicate any branch. For example, `*:dev` would indicate that any
+      branch can be merged into the `dev` branch.
     required: true
     default: |
       .:dev
@@ -24,5 +29,5 @@ inputs:
     default: main
 
 runs:
-  using: 'node16'
-  main: 'dist/index.js'
+  using: node20
+  main: dist/index.js

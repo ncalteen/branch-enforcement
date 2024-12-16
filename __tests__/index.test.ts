@@ -4,6 +4,7 @@ import dedent from 'dedent-js'
 import * as core from '../__fixtures__/core.js'
 
 jest.unstable_mockModule('@actions/core', () => core)
+
 const { run } = await import('../src/index.js')
 
 const validPolicy = dedent`*:dev
@@ -13,7 +14,7 @@ qa:main`
 const invalidPolicy = dedent`**/*/my-branch:dev`
 
 describe('run', () => {
-  beforeEach(() => {
+  afterEach(() => {
     jest.resetAllMocks()
   })
 
