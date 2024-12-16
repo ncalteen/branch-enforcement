@@ -2,6 +2,7 @@ import { jest } from '@jest/globals'
 import * as core from '../__fixtures__/core.js'
 
 jest.unstable_mockModule('@actions/core', () => core)
+
 const { createRegex } = await import('../src/utils/create-regex.js')
 
 describe('createRegex', () => {

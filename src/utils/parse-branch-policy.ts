@@ -1,9 +1,12 @@
 import * as core from '@actions/core'
-import { PolicyEntry } from '../interfaces.js'
+import type { PolicyEntry } from '../types.js'
 import { createRegex } from './create-regex.js'
 
 /**
  * Parses the branch policy input or throws an error if the policy is invalid.
+ *
+ * @param branchPolicy The branch policy to parse.
+ * @returns An array of policy entries.
  */
 export async function parseBranchPolicy(
   branchPolicy: string

@@ -1,19 +1,32 @@
+// See: https://jestjs.io/docs/configuration
+
 import type { JestConfigWithTsJest } from 'ts-jest'
 
 const jestConfig: JestConfigWithTsJest = {
   clearMocks: true,
-  coverageReporters: ['json-summary', 'text', 'lcov'],
   collectCoverage: true,
   collectCoverageFrom: ['./src/**'],
-  preset: 'ts-jest',
+  coverageDirectory: './coverage',
+  coveragePathIgnorePatterns: ['/node_modules/', '/dist/'],
+  coverageReporters: ['json-summary', 'text', 'lcov'],
+  coverageThreshold: {
+    global: {
+      branches: 100,
+      functions: 100,
+      lines: 100,
+      statements: 100
+    }
+  },
   extensionsToTreatAsEsm: ['.ts'],
   moduleFileExtensions: ['ts', 'js'],
+  preset: 'ts-jest',
+  reporters: ['default'],
   resolver: 'ts-jest-resolver',
   testEnvironment: 'node',
   testMatch: ['**/*.test.ts'],
-  testPathIgnorePatterns: ['/node_modules/', '/dist/'],
+  testPathIgnorePatterns: ['/dist/', '/node_modules/'],
   transform: {
-    '^.+\\.tsx?$': [
+    '^.+\\.ts$': [
       'ts-jest',
       {
         tsconfig: 'tsconfig.eslint.json',

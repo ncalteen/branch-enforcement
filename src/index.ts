@@ -1,5 +1,5 @@
 import * as core from '@actions/core'
-import { PolicyEntry } from './interfaces.js'
+import type { PolicyEntry } from './types.js'
 import { parseBranchPolicy } from './utils/parse-branch-policy.js'
 
 /**
