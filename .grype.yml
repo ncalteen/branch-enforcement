@@ -1,0 +1,6 @@
+fail-on-severity: high
+quiet: true
+ignore:
+  - vulnerability: CVE-2024-34158
+  - vulnerability: CVE-2024-34156
+  - vulnerability: CVE-2024-34155
