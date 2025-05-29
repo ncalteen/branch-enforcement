@@ -1,7 +1,7 @@
 {
   "name": "branch-enforcement",
   "description": "Enforce pull requests being merged to specific branches",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "type": "module",
   "author": "Nick Alteen <ncalteen@github.com>",
   "homepage": "https://github.com/ncalteen/branch-enforcement",

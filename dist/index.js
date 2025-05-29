@@ -11496,6 +11496,20 @@ function requirePool () {
 	      ? { ...options.interceptors }
 	      : undefined;
 	    this[kFactory] = factory;
+
+	    this.on('connectionError', (origin, targets, error) => {
+	      // If a connection error occurs, we remove the client from the pool,
+	      // and emit a connectionError event. They will not be re-used.
+	      // Fixes https://github.com/nodejs/undici/issues/3895
+	      for (const target of targets) {
+	        // Do not use kRemoveClient here, as it will close the client,
+	        // but the client cannot be closed in this state.
+	        const idx = this[kClients].indexOf(target);
+	        if (idx !== -1) {
+	          this[kClients].splice(idx, 1);
+	        }
+	      }
+	    });
 	  }
 
 	  [kGetDispatcher] () {
@@ -14957,6 +14971,7 @@ function requireHeaders () {
 	  isValidHeaderName,
 	  isValidHeaderValue
 	} = requireUtil$5();
+	const util = require$$0$2;
 	const { webidl } = requireWebidl();
 	const assert = require$$0$3;
 
@@ -15503,6 +15518,9 @@ function requireHeaders () {
 	  [Symbol.toStringTag]: {
 	    value: 'Headers',
 	    configurable: true
+	  },
+	  [util.inspect.custom]: {
+	    enumerable: false
 	  }
 	});
 
@@ -21392,9 +21410,10 @@ function requireUtil$1 () {
 	if (hasRequiredUtil$1) return util$1;
 	hasRequiredUtil$1 = 1;
 
-	const assert = require$$0$3;
-	const { kHeadersList } = requireSymbols$4();
-
+	/**
+	 * @param {string} value
+	 * @returns {boolean}
+	 */
 	function isCTLExcludingHtab (value) {
 	  if (value.length === 0) {
 	    return false
@@ -21655,31 +21674,13 @@ function requireUtil$1 () {
 	  return out.join('; ')
 	}
 
-	let kHeadersListNode;
-
-	function getHeadersList (headers) {
-	  if (headers[kHeadersList]) {
-	    return headers[kHeadersList]
-	  }
-
-	  if (!kHeadersListNode) {
-	    kHeadersListNode = Object.getOwnPropertySymbols(headers).find(
-	      (symbol) => symbol.description === 'headers list'
-	    );
-
-	    assert(kHeadersListNode, 'Headers cannot be parsed');
-	  }
-
-	  const headersList = headers[kHeadersListNode];
-	  assert(headersList);
-
-	  return headersList
-	}
-
 	util$1 = {
 	  isCTLExcludingHtab,
-	  stringify,
-	  getHeadersList
+	  validateCookieName,
+	  validateCookiePath,
+	  validateCookieValue,
+	  toIMFDate,
+	  stringify
 	};
 	return util$1;
 }
@@ -22017,7 +22018,7 @@ function requireCookies () {
 	hasRequiredCookies = 1;
 
 	const { parseSetCookie } = requireParse();
-	const { stringify, getHeadersList } = requireUtil$1();
+	const { stringify } = requireUtil$1();
 	const { webidl } = requireWebidl();
 	const { Headers } = requireHeaders();
 
@@ -22093,14 +22094,13 @@ function requireCookies () {
 
 	  webidl.brandCheck(headers, Headers, { strict: false });
 
-	  const cookies = getHeadersList(headers).cookies;
+	  const cookies = headers.getSetCookie();
 
 	  if (!cookies) {
 	    return []
 	  }
 
-	  // In older versions of undici, cookies is a list of name:value.
-	  return cookies.map((pair) => parseSetCookie(Array.isArray(pair) ? pair[1] : pair))
+	  return cookies.map((pair) => parseSetCookie(pair))
 	}
 
 	/**
@@ -44474,26 +44474,28 @@ async function createRegex(ref) {
     if (ref.trim() === '')
         throw new SyntaxError(`Empty pattern: ${ref}`);
     // If the ref doesn't start with a letter, digit, or asterisk it's invalid.
-    // eslint-disable-next-line no-useless-escape
     if (!/[\w\d\*]/.test(ref[0]))
         throw new SyntaxError(`Invalid pattern: ${ref}`);
     // If the ref matches it's lodash representation, then it's an attempt to
     // match a branch name exactly. In that case, just return the ref as a regex
-    // (after escaping it).
-    if (ref === _.escapeRegExp(ref) && /^[\w\d\-_/]+$/.test(ref)) {
+    // (after escaping it). Periods have to be double escaped because
+    // `_.escapeRegExp` escapes them as `\\.` and the regex constructor expects
+    // them to be escaped as `\.`.
+    if (ref.replaceAll('.', '\\.') === _.escapeRegExp(ref) &&
+        /^[\w\d\-_/\.]+$/.test(ref)) {
         coreExports.info(`Exact match: ${ref}`);
         return new RegExp(_.escapeRegExp(ref));
     }
     // Otherwise, its one of the other supported patterns.
     switch (ref) {
         case '*':
-            // Match letters, digits, dashes, or underscores.
+            // Match letters, digits, dashes, underscores, or periods.
             coreExports.info(`Match letters, digits, dashes, underscores: ${ref}`);
-            return /^[\w\d\-_]+$/;
+            return /^[\w\d\-_\.]+$/;
         case '**/*':
-            // Match letters, digits, dashes, underscores, and slashes.
+            // Match letters, digits, dashes, underscores, slashes, and periods.
             coreExports.info(`Match letters, digits, dashes, underscores, slashes: ${ref}`);
-            return /^[\w\d\-_/]+$/;
+            return /^[\w\d\-_/\.]+$/;
         default: {
             // Get the part of the ref before the first asterisk.
             const lead = /^[\w\d\-_/]+/.exec(_.escapeRegExp(ref))?.[0] ?? '';
@@ -44508,10 +44510,10 @@ async function createRegex(ref) {
             switch (tail) {
                 case '*':
                     coreExports.info(`Match any character except a slash: ${ref}`);
-                    return new RegExp(`^${lead}[\\w\\d\\-\\_]+$`);
+                    return new RegExp(`^${lead}[\\w\\d\\-\\_\\.]+$`);
                 case '**/*':
                     coreExports.info(`Match any character: ${ref}`);
-                    return new RegExp(`^${lead}[\\w\\d\\-\\_\\/]+$`);
+                    return new RegExp(`^${lead}[\\w\\d\\-\\_\\/\\.]+$`);
                 default:
                     coreExports.info(`Fall back to just the lead: ${ref}`);
                     return new RegExp(`^${lead.replace('/', '')}$`);
@@ -44531,6 +44533,11 @@ async function parseBranchPolicy(branchPolicy) {
     // Split the policy into an array of head/base pairs.
     const policyLines = branchPolicy.split('\n');
     for (const policyLine of policyLines) {
+        // If the line is empty, skip it.
+        if (policyLine.trim() === '') {
+            coreExports.info('Skipping empty policy line');
+            continue;
+        }
         // Get the head and base from the policy line.
         const [head, base] = policyLine.split(':');
         try {
@@ -44542,6 +44549,7 @@ async function parseBranchPolicy(branchPolicy) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         }
         catch (error) {
+            /* istanbul ignore next */
             if (error instanceof SyntaxError) {
                 coreExports.error(error.message);
                 coreExports.error(`Policy line: ${policyLine}`);

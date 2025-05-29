@@ -1,6 +1,5 @@
 import * as core from '@actions/core'
-import type { PolicyEntry } from './types.js'
-import { parseBranchPolicy } from './utils/parse-branch-policy.js'
+import { parseBranchPolicy, PolicyEntry } from './utils/parse-branch-policy.js'
 
 /**
  * Fails if the branch merge order is not being followed

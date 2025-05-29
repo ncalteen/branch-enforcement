@@ -2,10 +2,11 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "declaration": true,
+    "declaration": false,
     "declarationMap": false,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
     "lib": ["ES2022"],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
@@ -15,6 +16,7 @@
     "noUnusedParameters": false,
     "pretty": true,
     "resolveJsonModule": true,
+    "sourceMap": false,
     "strict": true,
     "strictNullChecks": true,
     "target": "ES2022"

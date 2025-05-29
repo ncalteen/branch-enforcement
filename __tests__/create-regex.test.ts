@@ -6,43 +6,48 @@ jest.unstable_mockModule('@actions/core', () => core)
 const { createRegex } = await import('../src/utils/create-regex.js')
 
 describe('createRegex', () => {
-  it('"*" should match alphanumeric, dash, and underscore', async () => {
+  it('"*" should match alphanumeric, dash, underscore, and period', async () => {
     const regex = await createRegex('*')
     expect(regex.test('abc')).toBe(true)
     expect(regex.test('123')).toBe(true)
     expect(regex.test('-_')).toBe(true)
+    expect(regex.test('v1.2.3')).toBe(true)
     expect(regex.test('!')).toBe(false)
     expect(regex.test('foo/bar')).toBe(false)
   })
 
-  it('"**/*" should match alphanumeric, dash, underscore, and slash', async () => {
+  it('"**/*" should match alphanumeric, dash, underscore, slash, and period', async () => {
     const regex = await createRegex('**/*')
     expect(regex.test('abc')).toBe(true)
     expect(regex.test('123')).toBe(true)
     expect(regex.test('-_/')).toBe(true)
+    expect(regex.test('v1.2.3')).toBe(true)
     expect(regex.test('!')).toBe(false)
     expect(regex.test('foo/bar')).toBe(true)
     expect(regex.test('foo/bar/baz')).toBe(true)
   })
 
-  it('"foo1/*" should match "foo/" followed by alphanumeric, dash, and underscore', async () => {
-    const regex = await createRegex('foo1/*')
-    expect(regex.test('foo1/bar')).toBe(true)
-    expect(regex.test('foo1/bar/baz')).toBe(false)
-    expect(regex.test('bar/foo1')).toBe(false)
-    expect(regex.test('foo1')).toBe(false)
-    expect(regex.test('fo o1')).toBe(false)
-    expect(regex.test('foo1!')).toBe(false)
+  it('"foo/*" should match "foo/" followed by alphanumeric, dash, underscore, and period', async () => {
+    const regex = await createRegex('foo/*')
+    expect(regex.test('foo/bar')).toBe(true)
+    expect(regex.test('foo/v1.2.3')).toBe(true)
+    expect(regex.test('foo/bar/baz')).toBe(false)
+    expect(regex.test('bar/foo')).toBe(false)
+    expect(regex.test('foo')).toBe(false)
+    expect(regex.test('fo o')).toBe(false)
+    expect(regex.test('foo!')).toBe(false)
   })
 
-  it('"foo2/**/*" should match "foo/" followed by alphanumeric, dash, underscore, and slash', async () => {
-    const regex = await createRegex('foo2/**/*')
-    expect(regex.test('foo2/bar')).toBe(true)
-    expect(regex.test('foo2/bar/baz')).toBe(true)
-    expect(regex.test('bar/foo2')).toBe(false)
-    expect(regex.test('foo2')).toBe(false)
+  it('"foo/**/*" should match "foo/" followed by alphanumeric, dash, underscore, slash, and period', async () => {
+    const regex = await createRegex('foo/**/*')
+    expect(regex.test('foo/bar')).toBe(true)
+    expect(regex.test('foo/v1.2.3')).toBe(true)
+    expect(regex.test('foo/bar/baz')).toBe(true)
+    expect(regex.test('foo/bar/v1.2.3')).toBe(true)
+    expect(regex.test('bar/foo')).toBe(false)
+    expect(regex.test('foo')).toBe(false)
     expect(regex.test('fo o2')).toBe(false)
-    expect(regex.test('foo2!')).toBe(false)
+    expect(regex.test('foo!')).toBe(false)
   })
 
   it('"foo/**/invalid/*" should match "foo" only', async () => {
